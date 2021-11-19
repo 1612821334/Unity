@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
     public float speed = 0.5f;       //移动速度
+    [HideInInspector]
     public CharacterController playerConl;
     /// <summary>
     /// 向前移动

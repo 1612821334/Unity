@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 玩家音效控制
+/// 敌人音效
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
-public class PlayerAudio : MonoBehaviour
+public class EnemyAudio : MonoBehaviour
 {
     public AudioClip[] clips;
-    public PlayerAudioCenter source;
+    public EnemyAudioCenter source;
     private void Awake()
     {
-        source = new PlayerAudioCenter(GetComponent<AudioSource>(),clips);
+        source = new EnemyAudioCenter(GetComponent<AudioSource>(), clips);
     }
 }
