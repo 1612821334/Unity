@@ -50,6 +50,7 @@ public class EnemyStatusInfo : MonoBehaviour
         if (enemyAi.anim.action.IsPlay(EnemyAnimation.AnimType.Death))
         {
             enemyAi.motor.poinits.IsUsable = true;
+            enemyAi.audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Death);
             Object.Destroy(this.gameObject);
             spawn.LateCreateEnemy();
         }

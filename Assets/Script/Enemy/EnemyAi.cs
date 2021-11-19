@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(EnemyStatusInfo))]
 [RequireComponent(typeof(EnemyAnimation))]
+[RequireComponent(typeof(EnemyAudio))]
 [RequireComponent(typeof(EnemyMotor))]
 public class EnemyAi : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class EnemyAi : MonoBehaviour
     public EnemyMotor motor;                       //敌人马达
     [HideInInspector]
     public EnemyStatusInfo info;                   //敌人状态类
+    [HideInInspector]
+    public EnemyAudio audios;                      //敌人音效
     public float damage;                           //伤害数
     public float distanceOfPlayer=2;               //向玩家移动的距离条件
     private float atckTimer;                       //攻击计时器
@@ -35,6 +38,7 @@ public class EnemyAi : MonoBehaviour
         motor.mesh = GetComponentInChildren<MeshRenderer>();
         motor.enemyConl = GetComponent<CharacterController>();
         info = GetComponent<EnemyStatusInfo>();
+        audios = GetComponent<EnemyAudio>();
     }
     private void Update()
     {
@@ -69,6 +73,7 @@ public class EnemyAi : MonoBehaviour
     private void PathToPlayer()
     {
         anim.action.Play(EnemyAnimation.AnimType.Run);
+        audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Run);
     }
 
     /// <summary>
@@ -80,6 +85,7 @@ public class EnemyAi : MonoBehaviour
         if (Time.time >= atckTimer)
         {
             anim.action.Play(EnemyAnimation.AnimType.ShootsGun);
+            audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Shoot);
             atckTimer = Time.time + atkInterVal;
         }
     }
@@ -92,6 +98,7 @@ public class EnemyAi : MonoBehaviour
         if (motor.Pathfinding())
         {
             anim.action.Play(EnemyAnimation.AnimType.Run);
+            audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Run);
         }
         else
         {
@@ -106,6 +113,7 @@ public class EnemyAi : MonoBehaviour
         if (Time.time >= atckTimer)
         {
             anim.action.Play(EnemyAnimation.AnimType.SwordAttack);
+            audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Hit);
             atckTimer = Time.time + atkInterVal;
         }
     }

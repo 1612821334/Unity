@@ -10,11 +10,11 @@ public class CameraZoom : MonoBehaviour
     public float[] zoomLevel;
     private Camera cameraSign;
     private int index;
-    private void Start()
+    private void Awake()
     {
         cameraSign = GetComponentInChildren<Camera>();
     }
-    public void Update()
+    public void CameraScale()
     {
         if(Input.GetMouseButtonDown(2))
         {

@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 533169622085081090}
   - component: {fileID: 4365573109257591713}
   - component: {fileID: -3392299801299850618}
+  - component: {fileID: -2205432673642988174}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -195,6 +196,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   motor: {fileID: 0}
   info: {fileID: 0}
+  audios: {fileID: 0}
   damage: 0
   distanceOfPlayer: 2
 --- !u!54 &4365573109257591713
@@ -231,6 +233,25 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-2205432673642988174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8779055921479829314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d946989e710f94999779bff955cd36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 3519e1b49b777a34d8674238d3c71350, type: 3}
+  - {fileID: 8300000, guid: 258857b6c358d0644a339892e0212203, type: 3}
+  - {fileID: 8300000, guid: 736a6ee94d8a94aef925851d18125a0c, type: 3}
+  - {fileID: 8300000, guid: fb859d907317d2446a59ffdeb1807e15, type: 3}
+  - {fileID: 8300000, guid: eb3bd47854f520742b9701987981ae45, type: 3}
+  - {fileID: 8300000, guid: fb54d3718f2698f4a894c26225dc3e4f, type: 3}
 --- !u!1001 &8779055920271762400
 PrefabInstance:
   m_ObjectHideFlags: 0
