@@ -8,9 +8,9 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     public GameObject[] enemyType;                          //敌人类型
-    public int maxCount;                                    //最大敌人生成数
+    public int maxCount = 5;                                //最大敌人生成数
     public int startCount;                                  //场上敌人数
-    private float createInterval;                           //敌人生成间隔时间
+    private float createInterval = 2;                       //敌人生成间隔时间
     public static int spawnedCount;                         //已生成敌人数
     private SearchFixDistancePlayer playerSearch;           //最近生成距离内玩家
     private PlayerStatusInfo player;                        //最近生成距离内玩家信息
@@ -18,9 +18,6 @@ public class EnemySpawn : MonoBehaviour
     private Transform wayChild;                             //子路线父节点
     private void Awake()
     {
-        maxCount = 5;
-        startCount = 2;
-        createInterval = 2;
         playerSearch = GetComponent<SearchFixDistancePlayer>();
         CalculateWayLinePoints();
     }

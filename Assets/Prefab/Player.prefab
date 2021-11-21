@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 3175478099993009321}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,8 +306,6 @@ MonoBehaviour:
   maximumX: 60
   minimumY: -30
   maximumY: 30
-  cameraEye: {fileID: 0}
-  Zoom: {fileID: 0}
 --- !u!114 &-5176171032915286279
 MonoBehaviour:
   m_ObjectHideFlags: 0
