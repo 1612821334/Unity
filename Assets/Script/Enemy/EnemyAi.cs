@@ -29,6 +29,7 @@ public class EnemyAi : MonoBehaviour
     public EnemyAudio audios;                      //敌人音效
     public float damage;                           //伤害数
     public float distanceOfPlayer=2;               //向玩家移动的距离条件
+    public float angle = 60;                       //敌人追击视野
     private float atckTimer;                       //攻击计时器
     private float atkInterVal=2;                   //攻击间隔时间
     private void Start()
@@ -132,7 +133,9 @@ public class EnemyAi : MonoBehaviour
     /// </summary>
     private void EnemyMove()
     {
-        if (Vector3.Distance(transform.position, motor.playerPoint.position) < distanceOfPlayer)
+        Debug.DrawLine(transform.position, motor.playerPoint.position,Color.red);
+        if (Vector3.Distance(motor.playerPoint.position,transform.position) < distanceOfPlayer
+            && Vector3.Angle(transform.forward, (motor.playerPoint.position - transform.position).normalized) < angle)
         {
             switch (motor.MoveToPlyer())
             {

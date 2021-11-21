@@ -114,7 +114,15 @@ public class PlayerCenter : MonoBehaviour
     /// <param name="aduioType"></param>
     private void MoveAnimAudio(float speed, PlayerAnimation.AnimType animatorType, float speedType, PlayerAudioCenter.AudioType aduioType)
     {
-        motor.MoveMentForward(speed);
+        switch (animatorType)
+        {
+            case PlayerAnimation.AnimType.Speed: motor.MoveMentForward(speed);break;
+            case PlayerAnimation.AnimType.Dircetion: if (speedType == 0.5f)
+                {
+                    motor.MoveMentLeft(speed);
+                }
+                else motor.MoveMentRight(speed); break;
+        }
         anim.action.PlayAnimation(animatorType, speedType);
         audios.source.PlayAudioType(aduioType);
     }
