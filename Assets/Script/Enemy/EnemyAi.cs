@@ -29,8 +29,8 @@ public class EnemyAi : MonoBehaviour
     public EnemyAudio audios;                      //敌人音效
     public float damage;                           //伤害数
     public float distanceOfPlayer=2;               //向玩家移动的距离条件
-    public float angle = 60;                       //敌人追击视野
     private float atckTimer;                       //攻击计时器
+    private float goTime;                          //游戏运行时间
     private float atkInterVal=2;                   //攻击间隔时间
     private void Start()
     {
@@ -43,6 +43,7 @@ public class EnemyAi : MonoBehaviour
     }
     private void Update()
     {
+        goTime = Time.time;
         if (IsDeath() != true)
         {
             EnemyMove();
@@ -82,12 +83,12 @@ public class EnemyAi : MonoBehaviour
     /// </summary>
     private void Shootinig()
     {
-        if (anim.action.IsPlay(EnemyAnimation.AnimType.ShootsGun)) anim.action.Play(EnemyAnimation.AnimType.Idle);
-        if (Time.time >= atckTimer)
+        //if (anim.action.IsPlay(EnemyAnimation.AnimType.ShootsGun)) anim.action.Play(EnemyAnimation.AnimType.Idle);
+        if (goTime >= atckTimer)
         {
             anim.action.Play(EnemyAnimation.AnimType.ShootsGun);
             audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Shoot);
-            atckTimer = Time.time + atkInterVal;
+            atckTimer = goTime + atkInterVal;
         }
     }
 
@@ -111,11 +112,11 @@ public class EnemyAi : MonoBehaviour
     /// </summary>
     private void EnemyAttack()
     {
-        if (Time.time >= atckTimer)
+        if (goTime >= atckTimer)
         {
             anim.action.Play(EnemyAnimation.AnimType.SwordAttack);
             audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Hit);
-            atckTimer = Time.time + atkInterVal;
+            atckTimer = goTime + atkInterVal;
         }
     }
     /// <summary>
@@ -134,14 +135,17 @@ public class EnemyAi : MonoBehaviour
     private void EnemyMove()
     {
         Debug.DrawLine(transform.position, motor.playerPoint.position,Color.red);
-        if (Vector3.Distance(motor.playerPoint.position,transform.position) < distanceOfPlayer
-            && Vector3.Angle(transform.forward, (motor.playerPoint.position - transform.position).normalized) < angle)
+        if (Vector3.Distance(transform.position, motor.playerPoint.position) < distanceOfPlayer)
         {
-            switch (motor.MoveToPlyer())
+            print(Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized));
+            if (Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized) >= 0.5f)
             {
-                case State.PathToPlayer: currentState = State.PathToPlayer; ConsoleCenter(); break;
-                case State.FightAttack: currentState = State.FightAttack; ConsoleCenter(); break;
-                case State.Shooting: currentState = State.Shooting; ConsoleCenter(); break;
+                switch (motor.MoveToPlyer())
+                {
+                    case State.PathToPlayer: currentState = State.PathToPlayer; ConsoleCenter(); break;
+                    case State.FightAttack: currentState = State.FightAttack; ConsoleCenter(); break;
+                    case State.Shooting: currentState = State.Shooting; ConsoleCenter(); break;
+                }
             }
         }
         else

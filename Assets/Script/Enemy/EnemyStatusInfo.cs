@@ -38,15 +38,6 @@ public class EnemyStatusInfo : MonoBehaviour
     {
         enemyAi.anim.action.Play(EnemyAnimation.AnimType.Death);
         //等待死亡动画播放完成
-        #region
-        //string animString = "";
-        //var arr = enemyAi.anim.action.anim.GetCurrentAnimatorClipInfo(0);
-        //if (arr != null && arr.Length >= 1)
-        //{
-        //    animString = arr[0].clip.name;
-        //    print(animString);
-        //}
-        #endregion
         if (enemyAi.anim.action.IsPlay(EnemyAnimation.AnimType.Death))
         {
             enemyAi.motor.poinits.IsUsable = true;

@@ -199,7 +199,6 @@ MonoBehaviour:
   audios: {fileID: 0}
   damage: 0
   distanceOfPlayer: 2
-  angle: 60
 --- !u!54 &4365573109257591713
 Rigidbody:
   m_ObjectHideFlags: 0
