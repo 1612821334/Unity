@@ -72,6 +72,9 @@ public class PlayerAnimationAction
             case PlayerAnimation.AnimType.Shoot:
                 if (animationState.IsName("Shoot") && animationState.normalizedTime >= animTime)
                     return true;break;
+            case PlayerAnimation.AnimType.Death:
+                if (animationState.IsName("Death") && animationState.normalizedTime >= animTime)
+                    return true; break;
         }
         return false;
     }

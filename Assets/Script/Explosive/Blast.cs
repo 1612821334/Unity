@@ -25,6 +25,9 @@ public class Blast : MonoBehaviour
         Detection();
         Debug.DrawLine(transform.position, playerTF.position, Color.red);
     }
+    /// <summary>
+    /// «–µ„≈–∂®
+    /// </summary>
     private void CalculateTangent()
     {
         playerToExplosion = transform.position - playerTF.position;

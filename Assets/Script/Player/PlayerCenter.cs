@@ -16,16 +16,19 @@ public class PlayerCenter : MonoBehaviour
     private PlayerAnimation anim;               //玩家动画类
     private PlayerMotor motor;                  //玩家马达
     private PlayerAudio audios;                 //玩家音效
+    private PlayerStatusInfo info;              //玩家信息
     private void Start()
     {
         anim = GetComponent<PlayerAnimation>();
         motor = GetComponent<PlayerMotor>();
         audios = GetComponent<PlayerAudio>();
+        info = GetComponent<PlayerStatusInfo>();
+        info.anim = anim;info.audios = audios;
         motor.playerConl = GetComponent<CharacterController>();
     }
     private void Update()
     {
-
+        info.Damage();
         PlayerControlDetail();
     }
     /// <summary>
