@@ -27,7 +27,6 @@ public class EnemyAi : MonoBehaviour
     public EnemyStatusInfo info;                   //敌人状态类
     [HideInInspector]
     public EnemyAudio audios;                      //敌人音效
-    public float damage;                           //伤害数
     public float distanceOfPlayer=2;               //向玩家移动的距离条件
     private float atckTimer;                       //攻击计时器
     private float goTime;                          //游戏运行时间
@@ -44,11 +43,11 @@ public class EnemyAi : MonoBehaviour
     private void Update()
     {
         goTime = Time.time;
-        if (IsDeath() != true)
+        info.Damage();
+        if (info.state == false) 
         {
             EnemyMove();
         }
-        else return;
     }
     /// <summary>
     /// 敌人控制中心
@@ -120,16 +119,6 @@ public class EnemyAi : MonoBehaviour
         }
     }
     /// <summary>
-    /// 敌人死亡判定
-    /// </summary>
-    /// <returns></returns>
-    private bool IsDeath()
-    {
-        info.Damage(damage);
-        damage = 0;
-        return info.state;
-    }
-    /// <summary>
     /// 移动控制中心
     /// </summary>
     private void EnemyMove()
@@ -137,7 +126,7 @@ public class EnemyAi : MonoBehaviour
         Debug.DrawLine(transform.position, motor.playerPoint.position,Color.red);
         if (Vector3.Distance(transform.position, motor.playerPoint.position) < distanceOfPlayer)
         {
-            print(Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized));
+            //print(Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized));
             if (Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized) >= 0.5f)
             {
                 switch (motor.MoveToPlyer())

@@ -13,6 +13,7 @@ public class EnemyStatusInfo : MonoBehaviour
     private EnemyAi enemyAi;                 //AI类
     [HideInInspector]
     public  bool state;                      //状态
+    public float damage;                     //伤害数
     public EnemySpawn spawn;                 //敌人生成器
     private void Awake()
     {
@@ -22,14 +23,15 @@ public class EnemyStatusInfo : MonoBehaviour
     /// 受伤
     /// </summary>
     /// <param name="amount"></param>
-    public void Damage(float amount)
+    public void Damage()
     {
-        hp -= amount;
+        hp -= damage;
         if (hp <= 0) 
         {
             state = true;
             Death();
         }
+        damage = 0;
     }
     /// <summary>
     /// 死亡
