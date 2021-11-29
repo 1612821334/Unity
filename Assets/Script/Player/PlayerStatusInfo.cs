@@ -11,6 +11,7 @@ public class PlayerStatusInfo : MonoBehaviour
     [Range(1, 100)]
     private float hp = 100;                    //血量
     public float damage;                       //伤害
+    public bool state;                         //玩家状态
     public PlayerAnimation anim;               //玩家动画
     public PlayerAudio audios;                 //玩家音效
     public void Damage()
@@ -18,8 +19,10 @@ public class PlayerStatusInfo : MonoBehaviour
         hp -= damage;
         if(hp<=0)
         {
+            state = true;
             Death();
         }
+        damage = 0;
     }
     public void Death()
     {

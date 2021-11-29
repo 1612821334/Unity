@@ -29,7 +29,10 @@ public class PlayerCenter : MonoBehaviour
     private void Update()
     {
         info.Damage();
-        PlayerControlDetail();
+        if (info.state == false) 
+        {
+            PlayerControlDetail();
+        }
     }
     /// <summary>
     /// 玩家具体行为
