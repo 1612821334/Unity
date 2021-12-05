@@ -22,8 +22,11 @@ public class Blast : MonoBehaviour
     }
     private void Update()
     {
-        Detection();
-        Debug.DrawLine(transform.position, playerTF.position, Color.red);
+        if (playerTF != null)
+        {
+            Detection();
+            Debug.DrawLine(transform.position, playerTF.position, Color.red);
+        }
     }
     /// <summary>
     /// «–µ„≈–∂®

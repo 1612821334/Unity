@@ -21,6 +21,7 @@ public class PlayerAnimationAction
     #region
     public void PlayAnimation(PlayerAnimation.AnimType animatorType)
     {
+        animationState = anim.GetCurrentAnimatorStateInfo(0);
         switch (animatorType)
         {
             case PlayerAnimation.AnimType.Walking: anim.SetTrigger("Walking"); break;
@@ -32,7 +33,13 @@ public class PlayerAnimationAction
                 else
                     anim.SetTrigger("Jump"); break;
             case PlayerAnimation.AnimType.Shoot: anim.SetTrigger("Shoot"); break;
-            case PlayerAnimation.AnimType.Death: anim.SetTrigger("Death"); break;
+            case PlayerAnimation.AnimType.Death:
+                if (anim != null && animationState.IsName("death") == false) 
+                {
+                    anim.Play("death",0);
+                }
+                else
+                    anim.SetTrigger("Death"); break;
             default: anim.SetTrigger("Idle"); break;
         }
     }
@@ -60,6 +67,21 @@ public class PlayerAnimationAction
         }
     }
     /// <summary>
+    /// 正在播放动画
+    /// </summary>
+    /// <param name="animatorType"></param>
+    /// <returns></returns>
+    public bool IsPlaying(PlayerAnimation.AnimType animatorType)
+    {
+        animationState = anim.GetCurrentAnimatorStateInfo(0);
+        switch (animatorType)
+        {
+            case PlayerAnimation.AnimType.Shoot:
+                if (animationState.IsName("shootGun")|| animationState.IsName("shoot")) return true; break;
+        }
+        return false;
+    }
+    /// <summary>
     /// 判断动画是否播放完毕
     /// </summary>
     /// <param name="animatorType"></param>
@@ -70,10 +92,10 @@ public class PlayerAnimationAction
         switch (animatorType)
         {
             case PlayerAnimation.AnimType.Shoot:
-                if (animationState.IsName("Shoot") && animationState.normalizedTime >= animTime)
+                if (animationState.IsName("shoot") && animationState.normalizedTime >= animTime)
                     return true;break;
             case PlayerAnimation.AnimType.Death:
-                if (animationState.IsName("Death") && animationState.normalizedTime >= animTime)
+                if (animationState.IsName("death") && animationState.normalizedTime >= animTime)
                     return true; break;
         }
         return false;

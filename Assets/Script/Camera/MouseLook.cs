@@ -10,8 +10,8 @@ public class MouseLook : MonoBehaviour
     public float sensitivityY = 10F;
 
     // 左右旋转的最大角度
-    public float minimumX = -60F;
-    public float maximumX = 60F;
+    public float minimumX = -30F;
+    public float maximumX = 30F;
 
     //上下旋转最大角度
     public float minimumY = -30F;

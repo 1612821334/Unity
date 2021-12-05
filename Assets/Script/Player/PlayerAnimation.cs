@@ -17,6 +17,6 @@ public class PlayerAnimation : MonoBehaviour
     public PlayerAnimationAction action;
     private void Awake()
     {
-        action = new PlayerAnimationAction(GetComponent<Animator>());
+        action = new PlayerAnimationAction(GetComponentInChildren<Animator>());
     }
 }
