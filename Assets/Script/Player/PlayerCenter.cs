@@ -17,6 +17,7 @@ public class PlayerCenter : MonoBehaviour
     private PlayerMotor motor;                  //玩家马达
     private PlayerAudio audios;                 //玩家音效
     private PlayerStatusInfo info;              //玩家信息
+    private AutomaticGun gun;
     private void Start()
     {
         anim = GetComponent<PlayerAnimation>();
@@ -25,6 +26,7 @@ public class PlayerCenter : MonoBehaviour
         info = GetComponent<PlayerStatusInfo>();
         info.anim = anim;info.audios = audios;
         motor.playerConl = GetComponent<CharacterController>();
+        gun = GetComponentInChildren<AutomaticGun>();
     }
     private void Update()
     {
@@ -39,11 +41,15 @@ public class PlayerCenter : MonoBehaviour
     /// </summary>
     private void PlayerControlDetail()
     {
-        if (Input.GetButtonDown("Jump"))                                     
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            gun.UpdateAmmo();
+        }
+        else if (Input.GetButtonDown("Jump"))                                     
         {
             MoveAnimAudio(PlayerAnimation.AnimType.Jump, PlayerAudioCenter.AudioType.Jump); //跳跃
         }
-        else if (Input.GetAxis("Fire1") > 0)                                         
+        else if (Input.GetButton("Fire1"))
         {
             MoveAnimAudio(PlayerAnimation.AnimType.Shoot, PlayerAudioCenter.AudioType.Shoot, true); //射击
         }
@@ -96,7 +102,8 @@ public class PlayerCenter : MonoBehaviour
     private void MoveAnimAudio(PlayerAnimation.AnimType animatorType, PlayerAudioCenter.AudioType aduioType, bool state)
     {
         anim.action.PlayAnimation(animatorType, state);
-        audios.source.PlayAudioType(aduioType);
+        gun.Fire();
+        //audios.source.PlayAudioType(aduioType);
     }
     /// <summary>
     /// 后退

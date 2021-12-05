@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     private Vector3 direction;       //射线方向
     private Vector3 hitPos;          //击中位置
     private float length;            //射线长度
-    public float speed = 10;         //子弹速度
+    public float speed = 20;         //子弹速度
     public float damage = 100;       //子弹伤害
     public LayerMask mask;           //检测层物
     private RaycastHit hit;          //射线结果

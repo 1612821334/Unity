@@ -44,7 +44,7 @@ public class EnemyStatusInfo : MonoBehaviour
         {
             enemyAi.motor.poinits.IsUsable = true;
             enemyAi.audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Death);
-            Object.Destroy(this.gameObject);
+            Object.Destroy(enemyAi.anim.gameObject);
             spawn.LateCreateEnemy();
         }
     }
