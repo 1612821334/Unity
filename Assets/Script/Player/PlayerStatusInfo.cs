@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// 玩家状态信息
 /// </summary>
 public class PlayerStatusInfo : MonoBehaviour
 {
@@ -14,6 +14,14 @@ public class PlayerStatusInfo : MonoBehaviour
     public bool state;                         //玩家状态
     public PlayerAnimation anim;               //玩家动画
     public PlayerAudio audios;                 //玩家音效
+    /// <summary>
+    /// 提供外部使用
+    /// </summary>
+    public static PlayerStatusInfo istance { get; private set; }
+    private void Awake()
+    {
+        istance = this;
+    }
     public void Damage()
     {
         hp -= damage;
@@ -27,12 +35,5 @@ public class PlayerStatusInfo : MonoBehaviour
     public void Death()
     {
         anim.action.PlayAnimation(PlayerAnimation.AnimType.Death);
-        //等待死亡动画播放完成
-        if (anim.action.IsPlay(PlayerAnimation.AnimType.Death))
-        {
-            audios.source.PlayAudioType(PlayerAudioCenter.AudioType.Death);
-            Object.Destroy(this.gameObject);
-        }
-        return;
     }
 }

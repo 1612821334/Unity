@@ -7,13 +7,16 @@ using UnityEngine;
 /// </summary>
 public class EnemyMotor : MonoBehaviour
 {
-    public float speed = 1;          //移动速度
-    public WayLine poinits;          //移动路线
-    public float backDistance;       //回归距离
-    public float trackDistance;      //追踪距离
-    public int currentPointIndex;    //当前点位置
-    public Transform playerPoint;    //玩家位置
+    public float speed = 1;            //移动速度
+    public WayLine poinits;            //移动路线
+    public float backDistance=1;       //回归距离
+    public float trackDistance = 0.5f; //追踪距离
+    private int currentPointIndex;     //当前点位置
+    [HideInInspector]
+    public Transform playerPoint;      //玩家位置
+    [HideInInspector]
     public MeshRenderer mesh;
+    [HideInInspector]
     public CharacterController enemyConl;
     public EnemyMotor(WayLine value)
     {

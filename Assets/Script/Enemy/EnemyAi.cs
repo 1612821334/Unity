@@ -5,6 +5,9 @@ using UnityEngine;
 /// <summary>
 /// 敌人AI，通过判断执行寻路攻击等
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(EnemyStatusInfo))]
 [RequireComponent(typeof(EnemyAnimation))]
 [RequireComponent(typeof(EnemyAudio))]
@@ -27,7 +30,6 @@ public class EnemyAi : MonoBehaviour
     public EnemyStatusInfo info;                   //敌人状态类
     [HideInInspector]
     public EnemyAudio audios;                      //敌人音效
-    private EnemyGun gun;                          //敌人枪械
     public float distanceOfPlayer=2;               //向玩家移动的距离条件
     private float atckTimer;                       //攻击计时器
     private float goTime;                          //游戏运行时间
@@ -40,7 +42,6 @@ public class EnemyAi : MonoBehaviour
         motor.enemyConl = GetComponent<CharacterController>();
         info = GetComponent<EnemyStatusInfo>();
         audios = GetComponent<EnemyAudio>();
-        gun = GetComponentInChildren<EnemyGun>();
     }
     private void Update()
     {
@@ -87,9 +88,7 @@ public class EnemyAi : MonoBehaviour
         //if (anim.action.IsPlay(EnemyAnimation.AnimType.ShootsGun)) anim.action.Play(EnemyAnimation.AnimType.Idle);
         if (goTime >= atckTimer)
         {
-            gun.Fire();
             anim.action.Play(EnemyAnimation.AnimType.ShootsGun);
-            //audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Shoot);
             atckTimer = goTime + atkInterVal;
         }
     }
@@ -126,15 +125,13 @@ public class EnemyAi : MonoBehaviour
     /// </summary>
     private void EnemyMove()
     {
-        if (motor.playerPoint == null)
+        if (PlayerStatusInfo.istance.state)
         {
             currentState = State.PathFinding;
             ConsoleCenter();
         }
-        //Debug.DrawLine(transform.position, motor.playerPoint.position,Color.red);
         else if (Vector3.Distance(transform.position, motor.playerPoint.position) < distanceOfPlayer)
         {
-            //print(Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized));
             if (Vector3.Dot(transform.forward, (motor.playerPoint.position - transform.position).normalized) >= 0.5f)
             {
                 switch (motor.MoveToPlyer())

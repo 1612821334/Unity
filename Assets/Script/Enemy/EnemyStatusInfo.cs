@@ -14,7 +14,6 @@ public class EnemyStatusInfo : MonoBehaviour
     [HideInInspector]
     public  bool state;                      //状态
     public float damage;                     //伤害数
-    public EnemySpawn spawn;                 //敌人生成器
     private void Awake()
     {
         enemyAi = GetComponent<EnemyAi>();
@@ -42,10 +41,10 @@ public class EnemyStatusInfo : MonoBehaviour
         //等待死亡动画播放完成
         if (enemyAi.anim.action.IsPlay(EnemyAnimation.AnimType.Death))
         {
-            enemyAi.motor.poinits.IsUsable = true;
             enemyAi.audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Death);
-            Object.Destroy(enemyAi.anim.gameObject);
-            spawn.LateCreateEnemy();
+            enemyAi.motor.poinits.IsUsable = true;
+            Object.Destroy(this.gameObject);
+            EnemySpawn.SpawnDelegates();
         }
     }
 }

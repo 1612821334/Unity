@@ -40,7 +40,7 @@ public class EnemyAudioCenter
     /// <param name="clip"></param>
     public void PlayAudio(AudioClip clip)
     {
-        if (sourcce.isPlaying && clip == clips[3])
+        if (sourcce.isPlaying && (clip == clips[3] || clip == clips[4]))
         {
             Play(clip);
         }

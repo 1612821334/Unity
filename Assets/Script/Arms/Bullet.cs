@@ -12,14 +12,19 @@ public class Bullet : MonoBehaviour
     private Vector3 hitPos;          //击中位置
     private float length;            //射线长度
     public float speed = 20;         //子弹速度
-    public float damage = 100;       //子弹伤害
+    [HideInInspector]
+    public float damage;             //子弹伤害
     public LayerMask mask;           //检测层物
     private RaycastHit hit;          //射线结果
     private bool isColider;          //碰撞状态
-    private void Start()
+    /// <summary>
+    /// 子弹取消激活
+    /// </summary>
+    private void DisplayBullet()
     {
-        Destroy(this.gameObject, 3);
+        this.gameObject.SetActive(false);
     }
+
     private void Update()
     {
         BulletColider();
@@ -29,6 +34,7 @@ public class Bullet : MonoBehaviour
     /// </summary>
     private void BulletColider()
     {
+        Invoke("DisplayBullet", 3);
         start = transform.position;
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
         //transform.Translate(transform.forward * speed * Time.deltaTime, Space.Self);
@@ -38,6 +44,7 @@ public class Bullet : MonoBehaviour
         if (isColider)
         {
             hitPos = hit.point;//击中位置坐标
+            //GenerateContactEffect();
             if (hit.collider.tag == "Enemy")
             {
                 hit.collider.GetComponent<EnemyStatusInfo>().damage = damage;
@@ -46,7 +53,23 @@ public class Bullet : MonoBehaviour
             {
                 hit.collider.GetComponent<PlayerStatusInfo>().damage = damage;
             }
-            Destroy(this.gameObject);
+            DisplayBullet();
         }
+    }
+    /// <summary>
+    /// 生成击中特效
+    /// </summary>
+    private void GenerateContactEffect()
+    {
+        if (hit.collider == null) return;
+        //[对象池]
+        //根据标签加载资源(特效)
+        //特效名称规则：存放路径+接触物体标签
+        //GameObject prefabGo = Resources.Load<GameObject>("ContactEffects(特效路径)/" + hit.collider.tag);
+        //if (prefabGo)
+        //    Instantiate(prefabGo, hitPos + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal));
+        GameObject prefabGo = EffectPool.instance.GetPooledObject(hit.collider.tag);
+        prefabGo.transform.position = hitPos + hit.normal * 0.01f;
+        prefabGo.transform.rotation = Quaternion.LookRotation(hit.normal);
     }
 }
