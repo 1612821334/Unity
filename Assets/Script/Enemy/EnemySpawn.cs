@@ -16,8 +16,11 @@ public class EnemySpawn : MonoBehaviour
     private PlayerStatusInfo player;                        //最近生成距离内玩家信息
     public WayLine[] linePoints;                            //所有路线
     private Transform wayChild;                             //子路线父节点
+    public delegate void SpawnDelegate();
+    public static SpawnDelegate SpawnDelegates;
     private void Awake()
     {
+        SpawnDelegates += LateCreateEnemy;
         playerSearch = GetComponent<SearchFixDistancePlayer>();
         CalculateWayLinePoints();
     }
@@ -80,7 +83,6 @@ public class EnemySpawn : MonoBehaviour
         line.IsUsable = false;
         enemyMotor.poinits = line;
         enemyMotor.playerPoint = player.transform;
-        enemy.GetComponent<EnemyStatusInfo>().spawn = this;
     }
     /// <summary>
     /// 满足距离后初始生成敌人数

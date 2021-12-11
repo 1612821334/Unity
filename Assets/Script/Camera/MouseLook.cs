@@ -33,6 +33,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStatusInfo.istance.state) return;
         Zoom.CameraScale();
         // 根据鼠标X轴计算摄像机 Y轴旋转角度
         rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;

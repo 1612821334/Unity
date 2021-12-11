@@ -5,7 +5,6 @@ using UnityEngine;
 /// <summary>
 /// µ–»À“Ù–ß
 /// </summary>
-[RequireComponent(typeof(AudioSource))]
 public class EnemyAudio : MonoBehaviour
 {
     public AudioClip[] clips;

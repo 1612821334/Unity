@@ -9,7 +9,7 @@ public class AnimationAction
 {
     public Animator anim;                   //动画控制器
     public AnimatorStateInfo animationState;//动画控制器状态信息
-    private float animTime = 0.75f;         //动画执行时间
+    public float animTime = 0.75f;         //动画执行时间
     public AnimationAction(Animator anim)
     {
         this.anim = anim;
@@ -20,7 +20,8 @@ public class AnimationAction
     /// <param name="animatorType"></param>
     public void Play(EnemyAnimation.AnimType animatorType)
     {
-        switch(animatorType)
+        animationState = anim.GetCurrentAnimatorStateInfo(0);
+        switch (animatorType)
         {
             case EnemyAnimation.AnimType.Walking: anim.SetTrigger("Walking");break;
             case EnemyAnimation.AnimType.Run:
@@ -29,7 +30,13 @@ public class AnimationAction
                 else anim.SetTrigger("Run"); break;
             case EnemyAnimation.AnimType.ShootsGun: anim.SetTrigger("ShootsGun"); break;
             case EnemyAnimation.AnimType.SwordAttack: anim.SetTrigger("SwordAttack"); break;
-            case EnemyAnimation.AnimType.Death: anim.SetTrigger("Death"); break;
+            case EnemyAnimation.AnimType.Death:
+                if (anim != null && animationState.IsName("death") == false)
+                {
+                    anim.Play("Death", 0);
+                }
+                else
+                    anim.SetTrigger("Death"); break;
             default:anim.SetTrigger("Idle"); break;
         }
     }
@@ -48,7 +55,7 @@ public class AnimationAction
                     return true;
                     break;
             case EnemyAnimation.AnimType.SwordAttack:
-                if (animationState.IsName("ShootsGun") && animationState.normalizedTime >= animTime)
+                if (animationState.IsName("SwordAttack") && animationState.normalizedTime >= animTime)
                     return true; 
                 break;
             case EnemyAnimation.AnimType.Death:

@@ -22,7 +22,7 @@ public class Blast : MonoBehaviour
     }
     private void Update()
     {
-        if (playerTF != null)
+        if (!PlayerStatusInfo.istance.state)
         {
             Detection();
             Debug.DrawLine(transform.position, playerTF.position, Color.red);

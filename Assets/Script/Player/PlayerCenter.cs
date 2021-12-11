@@ -16,68 +16,122 @@ public class PlayerCenter : MonoBehaviour
     private PlayerAnimation anim;               //玩家动画类
     private PlayerMotor motor;                  //玩家马达
     private PlayerAudio audios;                 //玩家音效
-    private PlayerStatusInfo info;              //玩家信息
+    private PlayerStatusInfo playerInfo;        //玩家信息
     private AutomaticGun gun;
+    public delegate void playergate();
+    public playergate playergates;
     private void Start()
     {
+        playergates += JumpOrBack;
+        playergates += Fight;
+        playergates += RunOrMove;
+        playergates += LeftRightMove;
+        playergates += Idle;
         anim = GetComponent<PlayerAnimation>();
         motor = GetComponent<PlayerMotor>();
         audios = GetComponent<PlayerAudio>();
-        info = GetComponent<PlayerStatusInfo>();
-        info.anim = anim;info.audios = audios;
+        playerInfo = GetComponent<PlayerStatusInfo>();
+        playerInfo.anim = anim; playerInfo.audios = audios;
         motor.playerConl = GetComponent<CharacterController>();
         gun = GetComponentInChildren<AutomaticGun>();
     }
     private void Update()
     {
-        info.Damage();
-        if (info.state == false) 
+        if (playerInfo.state)
         {
-            PlayerControlDetail();
+            return;
         }
+        playerInfo.Damage();
+        PlayerControlDetail(playergates);
     }
     /// <summary>
     /// 玩家具体行为
     /// </summary>
-    private void PlayerControlDetail()
+    private void PlayerControlDetail(playergate playergateCenter)
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if (playergateCenter != null)
+        {
+            playergateCenter();
+        }
+        else
+            return;
+    }
+    /// <summary>
+    /// 跳跃后退
+    /// </summary>
+    private void JumpOrBack()
+    {
+        //跳跃
+        if (Input.GetButtonDown("Jump"))
+        {
+            MoveAnimAudio(PlayerAnimation.AnimType.Jump, PlayerAudioCenter.AudioType.Jump);
+        }
+        //后退
+        else if (Input.GetAxis("Vertical") < 0)
+        {
+            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.WalkBack, true, PlayerAudioCenter.AudioType.Walk);
+        }
+    }
+    /// <summary>
+    /// 奔跑移动
+    /// </summary>
+    private void RunOrMove()
+    {
+        //奔跑
+        if (Input.GetAxis("Fire3") > 0 && Input.GetAxis("Vertical") > 0)
+        {
+            MoveAnimAudio(run_speed, PlayerAnimation.AnimType.Speed, 1, PlayerAudioCenter.AudioType.Run);
+        }
+        //行走
+        else if (Input.GetAxis("Vertical") > 0)
+        {
+            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Speed, 0.5f, PlayerAudioCenter.AudioType.Walk);
+        }
+    }
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    private void Fight()
+    {
+        //更换弹匣
+        if (Input.GetKeyDown(KeyCode.R))
         {
             gun.UpdateAmmo();
         }
-        else if (Input.GetButtonDown("Jump"))                                     
-        {
-            MoveAnimAudio(PlayerAnimation.AnimType.Jump, PlayerAudioCenter.AudioType.Jump); //跳跃
-        }
+        //射击
         else if (Input.GetButton("Fire1"))
         {
-            MoveAnimAudio(PlayerAnimation.AnimType.Shoot, PlayerAudioCenter.AudioType.Shoot, true); //射击
+            MoveAnimAudio(PlayerAnimation.AnimType.Shoot, PlayerAudioCenter.AudioType.Shoot, true); 
         }
-        else if (Input.GetAxis("Vertical")<0)                                        
+        //近战攻击
+        else if (Input.GetAxis("Fire2") > 0)
         {
-            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.WalkBack, true, PlayerAudioCenter.AudioType.Walk); //后退
+            MoveAnimAudio(PlayerAnimation.AnimType.Fight, PlayerAudioCenter.AudioType.Hit);
         }
-        else if (Input.GetAxis("Fire3") >0 && Input.GetAxis("Vertical") > 0)      
+    }
+    /// <summary>
+    /// 左右移动
+    /// </summary>
+    private void LeftRightMove()
+    {
+        //左移
+        if (Input.GetAxis("Horizontal") < 0)
         {
-            MoveAnimAudio(run_speed, PlayerAnimation.AnimType.Speed, 1, PlayerAudioCenter.AudioType.Run);//奔跑
+            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Dircetion, 0.5f, PlayerAudioCenter.AudioType.Walk); 
         }
-        else if (Input.GetAxis("Vertical")>0)                                         
+        //右移
+        else if (Input.GetAxis("Horizontal") > 0)
         {
-            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Speed, 0.5f, PlayerAudioCenter.AudioType.Walk);//行走
+            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Dircetion, 1, PlayerAudioCenter.AudioType.Walk);
         }
-        else if (Input.GetAxis("Fire2")>0)                                     
-        {
-            MoveAnimAudio(PlayerAnimation.AnimType.Fight, PlayerAudioCenter.AudioType.Hit);//近战攻击
-        }
-        else if (Input.GetAxis("Horizontal")<0)                                        
-        {
-            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Dircetion, 0.5f, PlayerAudioCenter.AudioType.Walk); //左移
-        }
-        else if (Input.GetAxis("Horizontal")>0)                                         
-        {
-            MoveAnimAudio(walk_speed, PlayerAnimation.AnimType.Dircetion, 1, PlayerAudioCenter.AudioType.Walk);//右移
-        }
-        else
+    }
+    /// <summary>
+    /// 待机
+    /// </summary>
+    private void Idle()
+    {
+        //待机
+        if (Input.anyKey == false)
         {
             anim.action.PlayAnimation(PlayerAnimation.AnimType.Other, 0);
             anim.action.PlayAnimation(PlayerAnimation.AnimType.Other, false);
@@ -102,8 +156,6 @@ public class PlayerCenter : MonoBehaviour
     private void MoveAnimAudio(PlayerAnimation.AnimType animatorType, PlayerAudioCenter.AudioType aduioType, bool state)
     {
         anim.action.PlayAnimation(animatorType, state);
-        gun.Fire();
-        //audios.source.PlayAudioType(aduioType);
     }
     /// <summary>
     /// 后退
