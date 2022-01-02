@@ -38,7 +38,7 @@ public class EnemyAnimationEvent : MonoBehaviour
     }
     private void OnDestroy()
     {
-        ClearAllEvent();
+        Invoke("ClearAllEvent",1);
     }
     private void Fire()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 特效对象池
+/// 特效池
 /// </summary>
 public class EffectPool : MonoBehaviour
 {

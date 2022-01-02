@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Á¬·¢Ç¹
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class AutomaticGun : Gun
 {
     /// <summary>
@@ -18,6 +19,10 @@ public class AutomaticGun : Gun
     protected override void Start()
     {
         base.Start();
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
     }
     public override void Fire()
     {

@@ -20,8 +20,13 @@ public class PlayerCenter : MonoBehaviour
     private AutomaticGun gun;
     public delegate void playergate();
     public playergate playergates;
+    public GameObject myBag;
+    public GameObject myMenu;
+    private bool isOPen;
     private void Start()
     {
+        playergates += OpenBag;
+        playergates += OpenMenu;
         playergates += JumpOrBack;
         playergates += Fight;
         playergates += RunOrMove;
@@ -55,6 +60,22 @@ public class PlayerCenter : MonoBehaviour
         }
         else
             return;
+    }
+    private void OpenBag()
+    {
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+            myBag.SetActive(!myBag.activeSelf);
+        }
+    }
+    private void OpenMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+            myMenu.SetActive(!myMenu.activeSelf);
+        }
     }
     /// <summary>
     /// ÌøÔ¾ºóÍË
@@ -99,12 +120,12 @@ public class PlayerCenter : MonoBehaviour
             gun.UpdateAmmo();
         }
         //Éä»÷
-        else if (Input.GetButton("Fire1"))
+        else if (Input.GetButton("Fire1") && Time.timeScale == 1) 
         {
             MoveAnimAudio(PlayerAnimation.AnimType.Shoot, PlayerAudioCenter.AudioType.Shoot, true); 
         }
         //½üÕ½¹¥»÷
-        else if (Input.GetAxis("Fire2") > 0)
+        else if (Input.GetAxis("Fire2") > 0 && Time.timeScale == 1)
         {
             MoveAnimAudio(PlayerAnimation.AnimType.Fight, PlayerAudioCenter.AudioType.Hit);
         }

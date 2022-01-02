@@ -33,19 +33,21 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        if (PlayerStatusInfo.istance.state) return;
-        Zoom.CameraScale();
-        // 根据鼠标X轴计算摄像机 Y轴旋转角度
-        rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-
-        // 根据鼠标Y轴计算摄像机x轴旋转角度
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-        if (rotationX != 0 && rotationY != 0)
+        if (Time.timeScale == 1)
         {
-            RotateView();
+            if (PlayerStatusInfo.istance.state) return;
+            Zoom.CameraScale();
+            // 根据鼠标X轴计算摄像机 Y轴旋转角度
+            rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+
+            // 根据鼠标Y轴计算摄像机x轴旋转角度
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            if (rotationX != 0 && rotationY != 0)
+            {
+                RotateView();
+            }
         }
     }
-
     private void RotateView()
     {
         // 检查上下旋转角度不超过 minimumY和maximumY

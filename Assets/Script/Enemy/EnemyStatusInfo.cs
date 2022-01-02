@@ -43,8 +43,8 @@ public class EnemyStatusInfo : MonoBehaviour
         {
             enemyAi.audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Death);
             enemyAi.motor.poinits.IsUsable = true;
-            Object.Destroy(this.gameObject);
-            EnemySpawn.SpawnDelegates();
+            Destroy(this.gameObject);
+            if (EnemySpawn.instance.isActiveAndEnabled) EnemySpawn.instance.spawnDelegates("LateCreateEnemy");
         }
     }
 }

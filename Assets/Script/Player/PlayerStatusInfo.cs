@@ -8,8 +8,8 @@ using UnityEngine;
 public class PlayerStatusInfo : MonoBehaviour
 {
     [SerializeField]
-    [Range(1, 100)]
-    private float hp = 100;                    //ÑªÁ¿
+    [Range(1, 1000)]
+    public float hp = 100;                    //ÑªÁ¿
     public float damage;                       //ÉËº¦
     public bool state;                         //Íæ¼Ò×´Ì¬
     public PlayerAnimation anim;               //Íæ¼Ò¶¯»­
