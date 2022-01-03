@@ -16,6 +16,7 @@ public class SettingMenu : MonoBehaviour
         sources = GameObject.FindObjectsOfType<AudioSource>();
         sliderControl = GetComponentInChildren<Slider>();
         dropDownCrl = GetComponentInChildren<Dropdown>();
+        sliderControl.value = sources[0].volume;
     }
     /// <summary>
     /// 声音开关
@@ -25,6 +26,7 @@ public class SettingMenu : MonoBehaviour
         for (int index = 0; index < sources.Length; index++)
         {
             sources[index].mute = isVoice;
+            DontDestory.isVoice = isVoice;
         }
         isVoice = !isVoice;
     }
@@ -36,6 +38,7 @@ public class SettingMenu : MonoBehaviour
         for(int index=0;index<sources.Length;index++)
         {
             sources[index].volume = sliderControl.value;
+            DontDestory.voice = sliderControl.value;
         }
     }
     /// <summary>
@@ -57,5 +60,13 @@ public class SettingMenu : MonoBehaviour
             case 1: Screen.SetResolution(1920, 1080, isFull); break;
             case 2: Screen.SetResolution(800, 600, isFull); break;
         }
+    }
+    /// <summary>
+    ///退出设置
+    /// </summary>
+    public void OnSetGameButtonClick()
+    {
+        Time.timeScale = 0;
+        this.gameObject.SetActive(!this.gameObject.activeSelf);
     }
 }

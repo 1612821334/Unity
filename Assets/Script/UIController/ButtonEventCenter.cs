@@ -8,16 +8,45 @@ public class ButtonEventCenter : MonoBehaviour
 {
     public GameObject menu;
     public GameObject myBag;
-    public GameObject settingSence;
-    //private void Start()
-    //{
-    //    GetComponent<Button>().onClick.AddListener(OnClick);
-    //}
+    private GameObject settingSence;
+    private GameObject settingmenu;
+    private AudioSource[] sources;
+    public delegate void Voice();
+    public Voice VoiceInitialization;
+    private void Start()
+    {
+        VoiceInitialization += IsVoice;
+        VoiceInitialization += SetVoice;
+        sources = GameObject.FindObjectsOfType<AudioSource>();
+        settingSence = GameObject.FindObjectOfType<DontDestory>().gameObject;
+        settingmenu = settingSence.transform.GetChild(0).gameObject;
+        VoiceInitialization();
+    }
     private void FixedUpdate()
     {
-        if (!menu.activeInHierarchy)
+        if (menu != null && !menu.activeInHierarchy)
         {
-            settingSence.SetActive(false);
+            settingmenu.SetActive(false);
+        }
+    }
+    /// <summary>
+    /// 声音状态更改
+    /// </summary>
+    private void IsVoice()
+    {
+        for (int index = 0; index < sources.Length; index++)
+        {
+            sources[index].mute = DontDestory.isVoice;
+        }
+    }
+    /// <summary>
+    /// 音量大小设置
+    /// </summary>
+    private void SetVoice()
+    {
+        for (int index = 0; index < sources.Length; index++)
+        {
+            sources[index].volume = DontDestory.voice;
         }
     }
     /// <summary>
@@ -34,7 +63,7 @@ public class ButtonEventCenter : MonoBehaviour
     public void OnSetGameButtonClick()
     {
         Time.timeScale = 0;
-        settingSence.SetActive(true);
+        settingmenu.SetActive(!settingmenu.activeSelf);
     }
     /// <summary>
     /// 继续游戏
