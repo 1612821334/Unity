@@ -11,6 +11,10 @@ public class EnemyGun : Gun
     {
         base.Start();
     }
+    protected override void OnDestroy()
+    {
+
+    }
     public override void Fire()
     {
         base.Fire();

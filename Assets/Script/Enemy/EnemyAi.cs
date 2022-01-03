@@ -30,11 +30,10 @@ public class EnemyAi : MonoBehaviour
     public EnemyStatusInfo info;                   //敌人状态类
     [HideInInspector]
     public EnemyAudio audios;                      //敌人音效
-    public float distanceOfPlayer=2;               //向玩家移动的距离条件
+    public float distanceOfPlayer = 2;               //向玩家移动的距离条件
     private float atckTimer;                       //攻击计时器
-    private float goTime;                          //游戏运行时间
-    private float atkInterVal=2;                   //攻击间隔时间
-    private void Start()
+    private float atkInterVal = 2;                   //攻击间隔时间
+    private void Awake()
     {
         anim = GetComponent<EnemyAnimation>();
         motor = GetComponent<EnemyMotor>();
@@ -43,60 +42,89 @@ public class EnemyAi : MonoBehaviour
         info = GetComponent<EnemyStatusInfo>();
         audios = GetComponent<EnemyAudio>();
     }
-    private void Update()
+    private void OnEnable()
     {
-        goTime = Time.time;
-        info.Damage();
-        if (info.state == false) 
+        StartCoroutine("Ai");
+    }
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+    /// <summary>
+    /// AI控制
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Ai()
+    {
+        while (gameObject.activeInHierarchy)
         {
-            EnemyMove();
+            yield return StartCoroutine("Damage");
+            if (!info.state) { StartCoroutine("ConsoleCenter"); }
         }
+    }
+    /// <summary>
+    /// 敌人受伤
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Damage()
+    {
+        info.Damage();
+        yield return 0;
+    }
+    /// <summary>
+    /// 攻击计时器
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    IEnumerator Wait(float time)
+    {
+        for (atckTimer = time; atckTimer > 0; atckTimer -= Time.deltaTime)
+            yield return 0;
     }
     /// <summary>
     /// 敌人控制中心
     /// </summary>
-    private void ConsoleCenter()
+    IEnumerator ConsoleCenter()
     {
+        yield return StartCoroutine("EnemyMove");
         switch (currentState)
         {
             case State.PathFinding:
-                EnemyPathFinding();
+                StartCoroutine("EnemyPathFinding");
                 break;
             case State.FightAttack:
-                EnemyAttack();
+                StartCoroutine("EnemyAttack");
                 break;
             case State.PathToPlayer:
-                PathToPlayer(); break;
+                StartCoroutine("PathToPlayer"); break;
             case State.Shooting:
-                Shootinig();break;
+                StartCoroutine("Shootinig"); break;
         }
     }
     /// <summary>
     /// 向玩家移动
     /// </summary>
-    private void PathToPlayer()
+    IEnumerator PathToPlayer()
     {
         anim.action.Play(EnemyAnimation.AnimType.Run);
         audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Run);
+        yield return 0;
     }
 
     /// <summary>
     /// 敌人远程攻击
     /// </summary>
-    private void Shootinig()
+    IEnumerator Shootinig()
     {
         //if (anim.action.IsPlay(EnemyAnimation.AnimType.ShootsGun)) anim.action.Play(EnemyAnimation.AnimType.Idle);
-        if (goTime >= atckTimer)
-        {
-            anim.action.Play(EnemyAnimation.AnimType.ShootsGun);
-            atckTimer = goTime + atkInterVal;
-        }
+        anim.action.Play(EnemyAnimation.AnimType.ShootsGun);
+        yield return StartCoroutine(Wait(atkInterVal));
     }
 
     /// <summary>
     /// 敌人路点寻路
     /// </summary>
-    private void EnemyPathFinding()
+    IEnumerator EnemyPathFinding()
     {
         if (motor.Pathfinding())
         {
@@ -107,28 +135,25 @@ public class EnemyAi : MonoBehaviour
         {
             anim.action.Play(EnemyAnimation.AnimType.Idle);
         }
+        yield return 0;
     }
     /// <summary>
     /// 敌人近战攻击
     /// </summary>
-    private void EnemyAttack()
+    IEnumerator EnemyAttack()
     {
-        if (goTime >= atckTimer)
-        {
-            anim.action.Play(EnemyAnimation.AnimType.SwordAttack);
-            audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Hit);
-            atckTimer = goTime + atkInterVal;
-        }
+        anim.action.Play(EnemyAnimation.AnimType.SwordAttack);
+        audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Hit);
+        yield return StartCoroutine(Wait(atkInterVal));
     }
     /// <summary>
     /// 移动控制中心
     /// </summary>
-    private void EnemyMove()
+    IEnumerator EnemyMove()
     {
         if (PlayerStatusInfo.istance.state)
         {
             currentState = State.PathFinding;
-            ConsoleCenter();
         }
         else if (Vector3.Distance(transform.position, motor.playerPoint.position) < distanceOfPlayer)
         {
@@ -136,16 +161,16 @@ public class EnemyAi : MonoBehaviour
             {
                 switch (motor.MoveToPlyer())
                 {
-                    case State.PathToPlayer: currentState = State.PathToPlayer; ConsoleCenter(); break;
-                    case State.FightAttack: currentState = State.FightAttack; ConsoleCenter(); break;
-                    case State.Shooting: currentState = State.Shooting; ConsoleCenter(); break;
+                    case State.PathToPlayer: currentState = State.PathToPlayer; break;
+                    case State.FightAttack: currentState = State.FightAttack; break;
+                    case State.Shooting: currentState = State.Shooting; break;
                 }
             }
         }
         else
         {
             currentState = State.PathFinding;
-            ConsoleCenter();
         }
+        yield return 0;
     }
 }

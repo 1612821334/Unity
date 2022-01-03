@@ -6,7 +6,6 @@ using UnityEngine;
 /// 枪，资源暂无枪动画
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(BulletsPool))]
 public class Gun : MonoBehaviour
 {
     /// <summary>
@@ -43,13 +42,24 @@ public class Gun : MonoBehaviour
     public float atk = 100;
     private AudioSource source;
     private GameObject bullet;
-    private BulletsPool bulletPool;
+    private SimplePool bulletPool;
     protected virtual void Start()
     {
         anim = GetComponent<GunAnimation>();
-        bulletPool = GetComponent<BulletsPool>();
+        bulletPool = GetComponent<SimplePool>();
         flashGo = GetComponentInChildren<MuzzleFlash>();
         source = GetComponent<AudioSource>();
+    }
+    /// <summary>
+    /// 死亡释放对象池
+    /// </summary>
+    protected virtual void OnDestroy()
+    {
+        for(int i=0;i< SimplePool.GameObjectsPool.Count; i++)
+        {
+            Destroy(SimplePool.GameObjectsPool[i]);
+        }
+        SimplePool.GameObjectsPool.Clear();
     }
     /// <summary>
     /// 射击准备

@@ -17,6 +17,14 @@ public class Bullet : MonoBehaviour
     public LayerMask mask;           //检测层物
     private RaycastHit hit;          //射线结果
     private bool isColider;          //碰撞状态
+    private void OnEnable()
+    {
+        Invoke("DisplayBullet", 3);
+    }
+    private void Update()
+    {
+        BulletColiderJuadge();
+    }
     /// <summary>
     /// 子弹取消激活
     /// </summary>
@@ -24,17 +32,12 @@ public class Bullet : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
-
-    private void Update()
-    {
-        BulletColider();
-    }
     /// <summary>
     /// 子弹判定击中状态
     /// </summary>
-    private void BulletColider()
+    private void BulletColiderJuadge()
     {
-        Invoke("DisplayBullet", 3);
+        
         start = transform.position;
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
         //transform.Translate(transform.forward * speed * Time.deltaTime, Space.Self);
@@ -62,12 +65,14 @@ public class Bullet : MonoBehaviour
     private void GenerateContactEffect()
     {
         if (hit.collider == null) return;
+        #region
         //[对象池]
         //根据标签加载资源(特效)
         //特效名称规则：存放路径+接触物体标签
         //GameObject prefabGo = Resources.Load<GameObject>("ContactEffects(特效路径)/" + hit.collider.tag);
         //if (prefabGo)
         //    Instantiate(prefabGo, hitPos + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal));
+        #endregion
         GameObject prefabGo = EffectPool.instance.GetPooledObject(hit.collider.tag);
         prefabGo.transform.position = hitPos + hit.normal * 0.01f;
         prefabGo.transform.rotation = Quaternion.LookRotation(hit.normal);

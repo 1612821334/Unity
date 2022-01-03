@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 玩家动画事件类
@@ -27,6 +28,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     /// 玩家连发枪
     /// </summary>
     private AutomaticGun gun;
+    public GameObject deathUI;
     private void Awake()
     {
         _event= new AnimationEvent();
@@ -46,8 +48,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
     private void Death()
     {
-        print("Game Over!");
         playerAudio.source.PlayAudioType(PlayerAudioCenter.AudioType.Death);
+        deathUI.SetActive(true);
     }
     /// <summary>
     /// 添加动画事件
