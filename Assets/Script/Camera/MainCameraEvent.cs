@@ -10,6 +10,8 @@ public class MainCameraEvent : MonoBehaviour
     private Animation anim;
     private Camera mainCamera;
     public float playtime = 60;
+    public GameObject player;
+    public GameObject gameMenu;
     private AnimationEvent _event = new AnimationEvent();
     private void Start()
     {
@@ -23,10 +25,12 @@ public class MainCameraEvent : MonoBehaviour
     /// </summary>
     private void ShowGameMap()
     {
-        mainCamera.depth = 2;
+        mainCamera.depth = 0;
         anim.PlayQueued(anim.clip.name);
         _event.functionName = "ExitShowMap";
         _event.time = playtime;
+        player.SetActive(!player.activeSelf);
+        gameMenu.SetActive(!gameMenu.activeSelf);
     }
     /// <summary>
     /// ÍË³öÕ¹Ê¾
@@ -35,6 +39,7 @@ public class MainCameraEvent : MonoBehaviour
     {
         anim.Stop();
         mainCamera.depth = -1;
-        Time.timeScale = 1;
+        player.SetActive(!player.activeSelf);
+        gameMenu.SetActive(!gameMenu.activeSelf);
     }
 }

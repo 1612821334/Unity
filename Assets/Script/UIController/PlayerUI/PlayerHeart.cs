@@ -8,13 +8,12 @@ public class PlayerHeart : MonoBehaviour
     private Text hpText;
     private float totalHp;
     private Image hpIMage;
-    private GameObject objPlayer;
+    public GameObject objPlayer;
     private PlayerStatusInfo playerInfo;
     void Start()
     {
         hpText = GetComponentInChildren<Text>();
         hpIMage= GetComponentInChildren<Image>();
-        objPlayer = GameObject.FindWithTag("Player");
         playerInfo = objPlayer.GetComponentInChildren<PlayerStatusInfo>();
         hpIMage.fillAmount = 1; totalHp = playerInfo.hp;
     }
