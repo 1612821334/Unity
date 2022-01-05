@@ -29,12 +29,15 @@ public class PlayerAnimationEvent : MonoBehaviour
     /// </summary>
     private AutomaticGun gun;
     public GameObject deathUI;
+    public float attackDistance = 0.5f;
+    private EnemyStatusInfo enemyInfo;
     private void Awake()
     {
         _event= new AnimationEvent();
         anim = GetComponent<Animator>();
         gun = GetComponentInChildren<AutomaticGun>();
         playerAudio = GetComponentInParent<PlayerAudio>();
+        enemyInfo = GameObject.FindObjectOfType<EnemyStatusInfo>();
         clips = anim.runtimeAnimatorController.animationClips;
         AddAnimationEvent();
     }
@@ -42,10 +45,26 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         ClearAllEvent();
     }
+    /// <summary>
+    /// Éä»÷
+    /// </summary>
     private void Fire()
     {
         gun.Fire();
     }
+    /// <summary>
+    /// ½üÕ½¹¥»÷
+    /// </summary>
+    private void Attack()
+    {
+        if (Vector3.Distance(transform.position, enemyInfo.transform.position) <= attackDistance)
+        {
+            enemyInfo.damage = 10;
+        }
+    }
+    /// <summary>
+    /// ËÀÍö
+    /// </summary>
     private void Death()
     {
         playerAudio.source.PlayAudioType(PlayerAudioCenter.AudioType.Death);
@@ -67,6 +86,10 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case "dead2":
                     _event.functionName = "Death";
                     _event.time = clips[i].length * 0.1f;
+                    clips[i].AddEvent(_event); break;
+                case "puch left and right":
+                    _event.functionName = "Attack";
+                    _event.time = clips[i].length * 0.5f;
                     clips[i].AddEvent(_event); break;
             }
         }

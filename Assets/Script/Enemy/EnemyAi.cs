@@ -143,7 +143,6 @@ public class EnemyAi : MonoBehaviour
     IEnumerator EnemyAttack()
     {
         anim.action.Play(EnemyAnimation.AnimType.SwordAttack);
-        audios.source.PlayAudioType(EnemyAudioCenter.AudioType.Hit);
         yield return StartCoroutine(Wait(atkInterVal));
     }
     /// <summary>

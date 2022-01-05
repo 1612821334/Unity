@@ -9,7 +9,13 @@ public class SettingMenu : MonoBehaviour
     private AudioSource[] sources;
     private Slider sliderControl;
     private Dropdown dropDownCrl;
-    private bool isFull = true;
+    /// <summary>
+    /// 是否全屏
+    /// </summary>
+    private bool isFull;
+    /// <summary>
+    /// 是否静音
+    /// </summary>
     private bool isVoice = true;
     private void Start()
     {
@@ -23,11 +29,7 @@ public class SettingMenu : MonoBehaviour
     /// </summary>
     public void IsVoice()
     {
-        for (int index = 0; index < sources.Length; index++)
-        {
-            sources[index].mute = isVoice;
-            DontDestory.isVoice = isVoice;
-        }
+        DontDestory.isVoice = isVoice;
         isVoice = !isVoice;
     }
     /// <summary>
@@ -35,11 +37,7 @@ public class SettingMenu : MonoBehaviour
     /// </summary>
     public void VoiceSetting()
     {
-        for(int index=0;index<sources.Length;index++)
-        {
-            sources[index].volume = sliderControl.value;
-            DontDestory.voice = sliderControl.value;
-        }
+        DontDestory.voice = sliderControl.value;
     }
     /// <summary>
     /// 全屏设置
@@ -56,9 +54,9 @@ public class SettingMenu : MonoBehaviour
     {
         switch (dropDownCrl.value)
         {
-            case 0: Screen.SetResolution(2560, 1440, isFull); break;
-            case 1: Screen.SetResolution(1920, 1080, isFull); break;
-            case 2: Screen.SetResolution(800, 600, isFull); break;
+            case 0: Screen.SetResolution(2560, 1440, !isFull); break;
+            case 1: Screen.SetResolution(1920, 1080, !isFull); break;
+            case 2: Screen.SetResolution(1280, 720, !isFull); break;
         }
     }
     /// <summary>
