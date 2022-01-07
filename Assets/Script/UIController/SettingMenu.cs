@@ -54,7 +54,7 @@ public class SettingMenu : MonoBehaviour
     {
         switch (dropDownCrl.value)
         {
-            case 0: Screen.SetResolution(2560, 1440, !isFull); break;
+            case 0: Screen.SetResolution(2560, 1600, !isFull); break;
             case 1: Screen.SetResolution(1920, 1080, !isFull); break;
             case 2: Screen.SetResolution(1280, 720, !isFull); break;
         }

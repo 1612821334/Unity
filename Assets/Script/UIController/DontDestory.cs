@@ -26,6 +26,10 @@ public class DontDestory : MonoBehaviour
 
     void Awake()
     {
+        DontDestoryOnLoadSence();
+    }
+    private void DontDestoryOnLoadSence()
+    {
         if (!isExist)
         {
             for (int i = 0; i < DontDestroyObjects.Length; i++)
@@ -33,7 +37,8 @@ public class DontDestory : MonoBehaviour
                 //如果第一次加载，将这些物体设为DontDestroy
                 DontDestroyOnLoad(DontDestroyObjects[i]);
             }
-
+            Resolution[] resoulutions = Screen.resolutions;
+            Screen.SetResolution(resoulutions[resoulutions.Length - 1].width, resoulutions[resoulutions.Length - 1].height, true, 60);
             isExist = true;
         }
         else
