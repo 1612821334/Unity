@@ -18,11 +18,11 @@ public class GameTask : MonoBehaviour
     void Start()
     {
         taskText = GetComponent<Text>();
-        taskText.text = "消灭僵尸：0/12";
+        taskText.text = "前进！消灭僵尸：0/12";
     }
     private void Update()
     {
-        if (taskText.text == "消灭僵尸：12/12")
+        if (taskText.text == "前进！消灭僵尸：12/12")
         {
             winObj.SetActive(!winObj.activeSelf);
             Time.timeScale = 0;

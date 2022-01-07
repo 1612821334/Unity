@@ -70,7 +70,7 @@ public class EnemyAnimationEvent : MonoBehaviour
     /// </summary>
     private void Death()
     {
-        GameTask.instance.taskText.text = string.Format("消灭僵尸：{0}/12", ++taskCount);
+        GameTask.instance.taskText.text = string.Format("前进！消灭僵尸：{0}/12", ++taskCount);
         enemyAudio.source.PlayAudioType(EnemyAudioCenter.AudioType.Death);
     }
     /// <summary>
